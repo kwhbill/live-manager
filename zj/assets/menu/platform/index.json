@@ -1,0 +1,19 @@
+{
+	"data": {
+		"head": [],
+		"middle": [{
+			"n": "开放平台管理",
+			"items": [{
+				"n": "第三方应用管理",
+				"i": "third_app_manage",
+				"u": "lg,?g=>pages/application_manage"
+			},{
+              "n": "客户管理",
+              "i": "customer_manege",
+              "u": "lg,?g=>pages/customer_manege.html"
+            }
+            ]
+		}],
+		"foot": []
+	}
+}

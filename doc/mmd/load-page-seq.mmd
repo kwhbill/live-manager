@@ -1,0 +1,12 @@
+sequenceDiagram
+	participant B as Browser
+	participant N as Nginx
+	Note over B: load
+	B->>N: load url: page html
+	N-->>N: rewrite: portal htm
+	N->>B: response: portal htm
+	B-->>B: parse: url
+	B->>N: async load: page module
+	N->>B: response: page js + css
+	Note over B: render
+	B-->>B: render: portal app + page entry

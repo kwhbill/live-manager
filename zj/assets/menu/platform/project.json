@@ -1,0 +1,56 @@
+{
+	"data": {
+		"head": [],
+		"middle": [{
+			"n": "house_inspection_1",
+			"items": [{
+				"n": "house_inspection",
+				"items": [{
+					"n": "create_new_task",
+					"i": "fhys-task-create",
+					"u": "lp,?p=>houseqm3/create.html?category_cls=28"
+				}, {
+					"n": "task_management",
+					"i": "fhys-task-list",
+					"u": "lp,?p=>houseqm3/task_list.html?category_cls=28"
+				}, {
+					"n": "issue_management",
+					"i": "fhys-task-issue",
+					"u": "lp,?p=>houseqm3/issue_manage.html?category_cls=28"
+				}, {
+					"n": "statistics_report",
+					"i": "fhys-task-statistics",
+					"u": "lp,?p=>houseqm3/statistics.html?category_cls=28"
+				}]
+			}, {
+				"n": "handover_inspection",
+				"items": [{
+					"n": "create_new_task",
+					"i": "rhyf-task-create",
+					"u": "lp,?p=>houseqm3/create.html?category_cls=26"
+				}, {
+					"n": "task_management",
+					"i": "rhyf-task-list",
+					"u": "lp,?p=>houseqm3/task_list.html?category_cls=26"
+				}, {
+					"n": "issue_management",
+					"i": "rhyf-task-issue",
+					"u": "lp,?p=>houseqm3/issue_manage.html?category_cls=26"
+				}, {
+					"n": "proprietor_info_management",
+					"i": "rhyf-task-owner",
+					"u": "lp,?p=>houseqm3/house_owner.html?category_cls=26"
+				}, {
+					"n": "handover_report",
+					"i": "rhyf-task-inspection",
+					"u": "lp,?p=>houseqm3/inspection_report.html?category_cls=26"
+				}, {
+					"n": "statistics_report",
+					"i": "rhyf-task-statistics",
+					"u": "lp,?p=>houseqm3/statistics.html?category_cls=26"
+				}]
+			}]
+		}],
+		"foot": []
+	}
+}

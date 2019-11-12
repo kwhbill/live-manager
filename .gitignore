@@ -1,0 +1,17 @@
+.DS_Store
+/node_modules/
+/public/
+npm-debug.log
+yarn-error.log
+.tags*
+/build/
+!/products/
+/products/*
+!/products/demo/
+!/products/zj/
+!/products/zj-menu2/
+!/products/zj-menu3/
+!/products/buildingqm2/
+!/products/houseqm2/
+.idea/
+.vscode/

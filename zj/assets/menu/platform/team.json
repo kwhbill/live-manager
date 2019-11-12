@@ -1,0 +1,16 @@
+{
+    "data": {
+        "head": [],
+        "middle": [
+            {
+                "n": "house_inspection_1",
+                "items": [{
+                    "n": "inspection_item_management",
+					"i": "comp-checkitem-maneger",
+					"u": "z2,lt,?t=>v2/comp/category/index/${team_id}"
+                }]
+            }
+        ],
+        "foot": []
+    }
+}

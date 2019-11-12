@@ -1,0 +1,19 @@
+<div class='browser-dialog' id='browserDialog'>
+<p>尊敬的用户，感谢您对我们的支持！<br/> 为了您更好的界面体验，推荐使用以下浏览器：</p>
+<div class='browser-box'>
+  <div>
+    <div>
+      <img src='/public/zj/assets/imgs/360.png' >
+    </div>
+    <p>360极速浏览器</p>
+    <a href='http://chrome.360.cn/' target='_blank'>官网下载</a>
+  </div>
+  <div>
+    <div>
+      <img src='/public/zj/assets/imgs/chrome.png'>
+    </div>
+    <p>Chrome浏览器</p>
+  </div>
+</div>
+<div class="browser-layer"></div>
+</div>

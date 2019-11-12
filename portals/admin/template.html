@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="renderer" content="webkit"> 
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link id="appIcon" rel="shortcut icon" href="/opms/zj/assets/imgs/favicon.ico" />
+    <% htmlWebpackPlugin.files.css.forEach(function(link){ %>
+      <link href="<%= link %>" rel="stylesheet">  
+    <% }) %>
+    <style>
+      <%= htmlWebpackPlugin.options.ieCss %>
+    </style>
+    <link href="/opms/zj/assets/theme/css/ui.css" rel="stylesheet">
+  </head>
+  <body>
+      <script>
+        <%= htmlWebpackPlugin.options.ieNotice %>
+      </script>
+    <div id="app"></div>
+    <script src="/opms/zj/assets/js/require-2.3.5.js"></script>
+    <% htmlWebpackPlugin.files.js.slice(0,-1).forEach(function(link){ %>
+      <script src="<%= link %>"></script>
+    <% }) %>
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        if(window.APP_DISABLE) return
+        var appLoads = [
+          "<%= htmlWebpackPlugin.files.js.pop() %>",
+        ]
+        require(appLoads, function() {})
+      })();
+    </script>
+  </body>
+</html>
