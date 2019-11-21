@@ -1,22 +1,14 @@
 <template>
-  <div class="course">
+  <div class="classroom">
     <div class="header" style="margin-bottom:10px">
       <el-button type="primary" @click="onAddBtnClick">新增</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column
         fixed
-        prop="courseTitle"
-        label="课程名称"
-        width="150"
+        prop="classroomName"
+        label="教室名称"
       ></el-table-column>
-      <el-table-column
-        fixed
-        prop="courseIntroduce"
-        label="课程描述"
-        maxWidth="400"
-      ></el-table-column>
-
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button
@@ -37,12 +29,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <course-handle-dlg
+    <handle-dlg
       :visible="addDlgVisible"
       @close="addDlgVisible = false"
-      @reload="loadCourse"
+      @reload="loadClassroom"
       :form="curItem"
-    ></course-handle-dlg>
+    ></handle-dlg>
      <detail-dlg
       :visible="detailDlgVisible"
       @close="detailDlgVisible = false"
@@ -56,24 +48,23 @@
 export { router } from "./router";
 var BasePage = zj.widgets.BasePage;
 import qs from "qs";
-import CourseHandleDlg from "./components/course_handle";
+import HandleDlg from "./components/handle";
 import DetailDlg from "./components/detail";
 export default {
   mixins: [BasePage],
   
   components: {
-    CourseHandleDlg,
+    HandleDlg,
     DetailDlg
   },
   props: {},
   created() {
-    console.log(zj.utils.pageParam(), "zj.utils.pageParam()");
-    this.loadCourse();
+    this.loadClassroom();
   },
 
   data() {
     return {
-      menu: "course",
+      menu: "classroom",
       tableData: [],
       addDlgVisible: false,
       curItem: {},
@@ -86,30 +77,22 @@ export default {
   mounted() {},
   watch: {},
   methods: {
-    async getManagerInfo() {
-      let res = await zj.net.live({
-        method: "GET",
-        url: "/manager/info"
-        // params: zj.utils.pageParam()
-      });
-      debugger;
-      this.tableData = res.data.data.items;
-    },
+   
     async OnDetailBtnClick(row) {
       let res = await zj.net.live({
         method: "GET",
-        url: "/course/detail",
+        url: "/classroom/detail",
         params: zj.utils.pageParam({
-          courseId: row.courseId
+          classroomId: row.classroomId
         })
       });
       this.detailForm = res.data.data
       this.detailDlgVisible = true
     },
-    async loadCourse() {
+    async loadClassroom() {
       let res = await zj.net.live({
         method: "GET",
-        url: "/course/list",
+        url: "/classroom/list",
         params: zj.utils.pageParam()
       });
       this.tableData = res.data.data.items;
@@ -124,23 +107,23 @@ export default {
       this.curItem = {};
     },
     OnDeleteBtnClick(row) {
-      this.$confirm(`是否删除课程`, {
+      this.$confirm(`是否删除教室`, {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
         .then(async () => {
           let res = await zj.net.live({
-            url: "/course/delete",
+            url: "/classroom/delete",
             method: "POST",
             data: JSON.stringify(
               zj.utils.pageParam({
-                courseId: row.courseId
+                classroomId: row.classroomId
               })
             )
           });
           if (res.data.result == 0) {
             this.$message.success("删除成功");
-            this.loadCourse();
+            this.loadClassroom();
           } else {
             this.$message.error(res.data.msg);
           }

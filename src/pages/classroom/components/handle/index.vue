@@ -10,22 +10,14 @@
       >
         <el-row>
           <el-col :span="20">
-            <el-form-item label="课程名称" prop="courseTitle">
-              <el-input v-model="ruleForm.courseTitle"></el-input>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="课程描述" prop="courseTitle">
-              <el-input v-model="ruleForm.courseIntroduce"></el-input>
+            <el-form-item label="教室名称" prop="classroomName">
+              <el-input v-model="ruleForm.classroomName"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="18">
             <el-form-item>
-             
               <el-button type="primary" :loading="addLoading" @click="confirm">确定</el-button>
               <el-button @click="closeDlg">取消</el-button>
             </el-form-item>
@@ -43,21 +35,18 @@ export default {
   components: {},
   data() {
     return {
-      dlgTitle: "新增课程",
+      dlgTitle: "新增教室",
       ruleForm: {
-        courseTitle: "",
-        courseIntroduce: "",
+        classroomName: "",
+        classroomIntroduce: "",
         schoolId: "",
         handleType: "add"
       },
       rules: {
-        courseTitle: [
+        classroomName: [
           { required: true, message: "请输入名称", trigger: "blur" },
           { min: 2, max: 20, message: "长度在 2 到 20 个字符", trigger: "blur" }
         ],
-        courseIntroduce: [
-          { required: true, message: "请输入账号", trigger: "blur" }
-        ]
       },
       dlgVisible: false,
       addLoading: false
@@ -67,7 +56,7 @@ export default {
     visible(val) {
       this.dlgVisible = val;
       this.ruleForm = _.cloneDeep(this.form)
-      this.dlgTitle = this.ruleForm.handleType == "edit" ? "编辑课程" : "新增课程";
+      this.dlgTitle = this.ruleForm.handleType == "edit" ? "编辑教室" : "新增教室";
     }
   },
 
@@ -80,9 +69,9 @@ export default {
       this.$refs["ruleForm"].validate(async valid => {
         this.ruleForm.schoolId = zj.utils.pageParam().schoolId
         if (valid) {
-          let url =  "/course/add"
+          let url =  "/classroom/add"
           if(this.ruleForm.handleType == 'edit'){
-            url =  "/course/update"
+            url =  "/classroom/update"
           }
           this.addLoading = true;
           let res = await zj.net.live({

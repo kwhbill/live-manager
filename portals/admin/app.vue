@@ -142,6 +142,7 @@ export default {
         {
           confirmButtonText: "切换账号",
           callback: action => {
+            
             let urlLogin = zj.utils.urlAppendParam("/login", {
             to: window.location.href
           });

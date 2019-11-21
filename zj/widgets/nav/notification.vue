@@ -39,7 +39,7 @@ class NoRightErrNotice extends SingleErrNotice {
                     this.resetErrNotice()
                     return
                 }
-                let urlLogin = zj.utils.urlAppendParam("/login-base-components", {
+                let urlLogin = zj.utils.urlAppendParam("/opms/login.html", {
                     to: window.location.href
                 });
                 zj.utils.redirect(urlLogin);

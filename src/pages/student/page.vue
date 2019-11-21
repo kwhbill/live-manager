@@ -1,19 +1,19 @@
 <template>
-  <div class="course">
+  <div class="user">
     <div class="header" style="margin-bottom:10px">
       <el-button type="primary" @click="onAddBtnClick">新增</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column
         fixed
-        prop="courseTitle"
-        label="课程名称"
+        prop="userName"
+        label="姓名"
         width="150"
       ></el-table-column>
       <el-table-column
         fixed
-        prop="courseIntroduce"
-        label="课程描述"
+        prop="userGender"
+        label="性别"
         maxWidth="400"
       ></el-table-column>
 
@@ -37,12 +37,12 @@
         </template>
       </el-table-column>
     </el-table>
-    <course-handle-dlg
+    <handle-dlg
       :visible="addDlgVisible"
       @close="addDlgVisible = false"
       @reload="loadCourse"
       :form="curItem"
-    ></course-handle-dlg>
+    ></handle-dlg>
      <detail-dlg
       :visible="detailDlgVisible"
       @close="detailDlgVisible = false"
@@ -56,24 +56,24 @@
 export { router } from "./router";
 var BasePage = zj.widgets.BasePage;
 import qs from "qs";
-import CourseHandleDlg from "./components/course_handle";
+import HandleDlg from "./components/handle";
 import DetailDlg from "./components/detail";
 export default {
   mixins: [BasePage],
   
   components: {
-    CourseHandleDlg,
+    HandleDlg,
     DetailDlg
   },
   props: {},
   created() {
-    console.log(zj.utils.pageParam(), "zj.utils.pageParam()");
+    
     this.loadCourse();
   },
 
   data() {
     return {
-      menu: "course",
+      menu: "student",
       tableData: [],
       addDlgVisible: false,
       curItem: {},
@@ -89,7 +89,7 @@ export default {
     async getManagerInfo() {
       let res = await zj.net.live({
         method: "GET",
-        url: "/manager/info"
+        url: "/user/info"
         // params: zj.utils.pageParam()
       });
       debugger;
@@ -98,9 +98,9 @@ export default {
     async OnDetailBtnClick(row) {
       let res = await zj.net.live({
         method: "GET",
-        url: "/course/detail",
+        url: "/user/detail",
         params: zj.utils.pageParam({
-          courseId: row.courseId
+          userId: row.userId
         })
       });
       this.detailForm = res.data.data
@@ -109,7 +109,7 @@ export default {
     async loadCourse() {
       let res = await zj.net.live({
         method: "GET",
-        url: "/course/list",
+        url: "/user/list",
         params: zj.utils.pageParam()
       });
       this.tableData = res.data.data.items;
@@ -130,11 +130,11 @@ export default {
       })
         .then(async () => {
           let res = await zj.net.live({
-            url: "/course/delete",
+            url: "/user/delete",
             method: "POST",
             data: JSON.stringify(
               zj.utils.pageParam({
-                courseId: row.courseId
+                userId: row.userId
               })
             )
           });

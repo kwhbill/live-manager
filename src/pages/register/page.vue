@@ -96,17 +96,10 @@ export default {
 
   watch: {},
   created() {
-    this.loadCourse()
+   
   },
   methods: {
-     async loadCourse() {
-      let res = await zj.net.live({
-        method: "GET",
-        url: "/manager/list",
-        params: zj.utils.pageParam()
-      });
-      this.tableData = res.data.data;
-    },
+    
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
@@ -115,8 +108,8 @@ export default {
             method: "POST",
             data: JSON.stringify(this.ruleForm)
           });
-          if (res.data.code == 200) {
-            this.$router.push({ path: "/manager" });
+          if (res.data.result == 0) {
+             zj.utils.redirect("/opms/login.html")
           }
         } else {
           return false;

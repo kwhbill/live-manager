@@ -3,7 +3,12 @@
     <section class="login-contain">
       <div class="login-box">
         <div class="demo-ruleForm login-form">
-          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="0px">
+          <el-form
+            :model="ruleForm"
+            :rules="rules"
+            ref="ruleForm"
+            label-width="0px"
+          >
             <el-form-item prop="managerAccount">
               <el-input
                 v-model="ruleForm.managerAccount"
@@ -22,8 +27,11 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
+              <el-button type="primary" @click="submitForm('ruleForm')"
+                >登录</el-button
+              >
             </el-form-item>
+            <el-button type="text" @click="rootToRegister">注册</el-button>
           </el-form>
         </div>
       </div>
@@ -37,15 +45,13 @@ import qs from "qs";
 export default {
   // 页面均要继承BasePage，完成与App的通信工作
   mixins: [BaseLogin],
-  components: {
-   
-  },
+  components: {},
+  created() {},
   data() {
     return {
       ruleForm: {
         managerAccount: "",
-        managerPassword: "",
-       
+        managerPassword: ""
       },
       rules: {
         managerAccount: [
@@ -59,24 +65,27 @@ export default {
       }
     };
   },
-   methods: {
-    submitForm(formName) { 
-      this.$refs[formName].validate(async valid => {  
+
+  methods: {
+   rootToRegister(){
+     zj.utils.redirect("/opms/register.html")
+   },
+    submitForm(formName) {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           let res = await zj.net.live({
             method: "POST",
             url: "authority/login/",
             data: JSON.stringify(this.ruleForm)
           });
-          debugger
-          if(res.data.result === 0 ){
+          if (res.data.result === 0) {
             if (zj.pageParam().to) {
               location.href = zj.pageParam().to;
             } else {
-              location.href = "/opms/pages/third_app_manage.html";
+              location.href = "/opms/course.html?schoolId="+ res.data.data.schoolId;
             }
-          }else{
-            this.$message.error(res.data.message);
+          } else {
+            this.$message.error(res.data.msg);
           }
         } else {
           return false;
@@ -86,7 +95,6 @@ export default {
   }
 };
 </script>
-
 
 <style lang="less" scoped>
 * {
@@ -221,7 +229,7 @@ a:active {
   }
 }
 .demo-ruleForm {
-  margin: 30px auto 0 !important; 
+  margin: 30px auto 0 !important;
   width: 250px;
 }
 
@@ -229,20 +237,20 @@ a:active {
   margin-bottom: 30px;
 }
 .el-form-item {
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
 .el-form-item__error {
   top: 60%;
 }
 .el-checkbox {
-    float: left;
-    height: 36px;
-    margin-top: -4px;
-    margin-bottom: 4px;
+  float: left;
+  height: 36px;
+  margin-top: -4px;
+  margin-bottom: 4px;
 }
 .el-button {
-    height: 40px;
-    width: 100%;
+  height: 40px;
+  width: 100%;
 }
 </style>
 <style lang="less">

@@ -28,8 +28,8 @@ export default function () {
             port: 9999,
         
             proxy: {
-                '/live': {
-                    target: 'http://localhost:8008',
+                '/admin': {
+                    target: 'http://localhost:9000',
                     changeOrigin: true,     // target是域名的话，需要这个参数，
                     secure: false,          // 设置支持https协议的代理
                 },

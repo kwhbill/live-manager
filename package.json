@@ -30,6 +30,7 @@
     "fecha": "^2.3.1",
     "jquery": "^3.2.1",
     "js-cookie": "^2.1.4",
+    "kscreenshot": "^1.2.3",
     "leaflet": "https://codeload.github.com/Leaflet/Leaflet/tar.gz/197f9d43b7bbc73c0492bf62cd666a5a98038098",
     "leaflet.label": "https://codeload.github.com/Leaflet/Leaflet.label/tar.gz/90ed880773bd64723621a666e74a4f6730aea41c",
     "lodash": "^4.17.5",

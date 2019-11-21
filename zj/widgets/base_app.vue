@@ -89,57 +89,40 @@
         return data
       },
       async loadProdMenu() {
+        
         this.menu.currentIndex = _.get(this.page,"menu")
-        let menu = {
-          "head": [],
-          "middle": [{
+        let items = [{
             n: "直播后台管理",
             items: [
               {
-                n: "课程表",
+                n: "课程",
                 i: "course",
                 u: "course.html"
+              },
+              {
+                n: "教室",
+                i: "classroom",
+                u: "classroom.html"
+              },
+              {
+                n: "学生",
+                i: "student",
+                u: "student.html"
               }
             ]
-          }],
-          "foot": []
-        }
-
-        // 合并菜单
-        let menuHead =  menu.head
-        let menuMiddle = menu.middle
-        let menuFoot =  menu.foot
-        menuHead = this.transformMenuItems(menuHead)
-        menuMiddle = this.transformMenuItems(menuMiddle)
-        menuFoot = this.transformMenuItems(menuFoot)
-        // 移动和植入特定位置
-        let items = _.concat(menuHead, menuMiddle, menuFoot)
-
-        menu = {children: items}
-        this.menu.items = menu.children
+          }]
+        this.menu.items = this.transformMenuItems(items)
       },
 
 
       transformMenuItems(items) {
         // 转换菜单项，并进行权限过滤
         items = _.compact(_.map(items, (item) => {
-
-          let name = this.$t(`menu.${item.n}`)
-          let menuPrefix = "menu."
-          if(_.startsWith(name, menuPrefix)){
-            name = _.map(name.substr(menuPrefix.length).split("_"), word=>{
-              return _.upperFirst(word)
-            }).join(" ")
-          }
-          let order = _.get(item, "order", 0)
           let itemNew = {
             icon: item.c,
             url: item.u,
-            name,
+            name:item.n,
             index: item.i || _.uniqueId(),
-            hole: item.hole,
-            jump: item.jump,
-            order,
           }
           if (item.items) {
             itemNew.children = this.transformMenuItems(item.items)
@@ -148,112 +131,16 @@
           }
           return itemNew
         }))
-        return this.sortMenuByOrder(items)
+        return items
       },
 
       transformUrl(url) {
         // 转换并返回含指令的url
         if (!url) return url
-
-        // 指令处理
-        let symbol = "=>"
-        let notOldDomain = true
-        let pageParam = zj.utils.pageParam()
-        let levelId = `${this.menu.level}_id`
-        let params = {
-          [levelId]: pageParam[levelId]
-        }
-
-        // 模板替换
-        url = _.template(url)(pageParam)
-        let cmds = []
-
-        if (_.includes(url, symbol)) { // 含有指令
-          let queryKeyMap = {
-            "?g": "group_id",
-            "?t": "team_id",
-            "?p": "project_id",
-
-            "lg": "group",
-            "lt": "team",
-            "lp": "project"
-          }
-
-         let [cmdNew, urlNew] = _.split(url, symbol)
-
-          url = urlNew
-          cmds = _.split(cmdNew, ",")
-
-          _.each(cmds, (cmd) => {
-            switch (cmd) {
-              case "?g":
-              case "?t":
-              case "?p":
-                // 追加 ? group_id,team_id,project_id
-                let key = queryKeyMap[cmd]
-                params[key] = pageParam[key]
-                break;
-              case "lg":
-              case "lt":
-              case "lp":
-                // 追加 ? page_level
-                params["page_level"] = queryKeyMap[cmd]
-                break;
-              case "z3":  // zhijian3 的路径处理
-                url = "/v3/" + url
-                break
-              case "z2": // zhijian2 的路径处理
-                url = "/" + url
-                break;
-              default:   // public 的路径处理
-                break;
-            }
-          })
-          notOldDomain = _.isEmpty(_.intersection(cmds, ["z2", "z3"]))
-        }
-
-        if (notOldDomain) { // 未做旧域名的处理，为新页面，加public前缀
-          url = "/opms/" + url
-        }
-
-        // 合并URL
-        let r = /\?([^#]+)/
-        let query = _.get(url.match(r), "1")
-
-        if (query) { // 有 query，合并 baseQueryMap
-          let queryMap = qs.parse(query)
-          params = zj.utils.extendNew(queryMap, params)
-          params = this.filterParamByPageLevel(params, cmds)
-          url = _.replace(url, query, qs.stringify(params))
-        } else { // 插入 baseQueryMap
-          if (!_.isEmpty(params)) {
-            params = this.filterParamByPageLevel(params, cmds)
-            url = url + '?' + qs.stringify(params)
-          }
-        }
-
+        url = url + '?' + 'schoolId='+ zj.utils.pageParam().schoolId
         return url
       },
-
-      filterParamByPageLevel(params, cmds){
-        // page level 对 group,team,project 的过滤
-        let lvKeys = [
-          ["lg", "team,project"],
-          ["lt", "project"]
-        ]
-        _.each(lvKeys, ([lv, keys])=>{
-          let inCase = _.includes(cmds, lv)
-          if(inCase){
-            keys = _.split(keys, ",")
-            _.each(keys, key => {
-              delete params[`${key}_id`]
-            })
-          }
-        })
-
-        return params
-      },
-
+     
       onUrlItemClick(item){
         let url = item.raw ? item.url : this.transformUrl(item.url);
         if(url){

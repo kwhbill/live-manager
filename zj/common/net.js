@@ -2,7 +2,7 @@ import axios from "axios"
 export var request = axios.request
 
 const liveOptsDefault = {
-    baseURL: "/live/",
+    baseURL: "/admin/live/",
     responseType: "json",
     headers: {
         "Content-Type": "application/json"
@@ -45,6 +45,7 @@ export var configRequest = (function () {
     // 对 axios request 拦截
     axios.interceptors.request.use(
         function (config) {
+            // config.headers['authorization'] = localStorage.getItem("")
             return config
         },
         function (error) {
@@ -54,10 +55,29 @@ export var configRequest = (function () {
 
     // 对 axios response 拦截
     axios.interceptors.response.use(
+    
         function (response) { // before then
+            
+            var url = response.config.url
+            let msg = _.get(response, "data.msg") // gapi
+            let result = _.get(response, "data.result", 0)
+            if (result !== 0) {
+                zj.app.state.netErrs.push({
+                    url,
+                    msg,
+                    code:result
+                })
+                return Promise.reject(response)
+            }
             return response
         },
         function (error) { // before catch
+            let url = _.get(error, "response.config.url", "")
+            let msg = _.get(error, "msg", "unknow http error")
+            zj.app.state.netErrs.push({
+                url,
+                msg
+            })
             return Promise.reject(error)
         }
     )
