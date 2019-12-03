@@ -29,9 +29,12 @@ export default function () {
         
             proxy: {
                 '/admin': {
-                    target: 'http://localhost:9000',
+                    target: 'http://localhost:8009',
                     changeOrigin: true,     // target是域名的话，需要这个参数，
                     secure: false,          // 设置支持https协议的代理
+                    pathRewrite: {
+                        '^/admin/': '/'
+                      },
                 },
             },
             

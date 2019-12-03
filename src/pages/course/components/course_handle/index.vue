@@ -93,7 +93,7 @@ export default {
           this.addLoading = false;
           if (res.data.result == 0) {
             this.addLoading = false;
-            this.$message.success("新增成功");
+            this.$message.success("成功");
             this.$emit("reload");
             this.closeDlg();
           }

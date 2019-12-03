@@ -2,7 +2,7 @@ import axios from "axios"
 export var request = axios.request
 
 const liveOptsDefault = {
-    baseURL: "/admin/live/",
+    baseURL: "/admin/manage/",
     responseType: "json",
     headers: {
         "Content-Type": "application/json"
@@ -57,10 +57,10 @@ export var configRequest = (function () {
     axios.interceptors.response.use(
     
         function (response) { // before then
-            
             var url = response.config.url
             let msg = _.get(response, "data.msg") // gapi
             let result = _.get(response, "data.result", 0)
+       
             if (result !== 0) {
                 zj.app.state.netErrs.push({
                     url,

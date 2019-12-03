@@ -112,10 +112,11 @@ export default {
     },
 
     confirm() {
+      console.log(this.ruleForm);
       
       this.$refs["ruleForm"].validate(async valid => {
         this.ruleForm.schoolId = zj.utils.pageParam().schoolId;
-        this.ruleForm.userRole = ROLE.STUDENT;
+        this.ruleForm.userRole = ROLE.TEACHER;
         if (valid) {
           let url = "/user/add";
           if (this.ruleForm.handleType == "edit") {

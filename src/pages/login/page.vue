@@ -78,11 +78,12 @@ export default {
             url: "authority/login/",
             data: JSON.stringify(this.ruleForm)
           });
+
           if (res.data.result === 0) {
             if (zj.pageParam().to) {
               location.href = zj.pageParam().to;
             } else {
-              location.href = "/opms/course.html?schoolId="+ res.data.data.schoolId;
+              location.href = "/opms/course.html";
             }
           } else {
             this.$message.error(res.data.msg);

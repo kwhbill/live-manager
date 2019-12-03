@@ -29,13 +29,24 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="margin-top:10px"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="beginPos"
+      :page-size="pageSize"
+      :page-sizes="[5, 10, 20, 30]"
+      layout="total, prev, pager, next"
+      :total="total"
+    >
+    </el-pagination>
     <handle-dlg
       :visible="addDlgVisible"
       @close="addDlgVisible = false"
       @reload="loadClassroom"
       :form="curItem"
     ></handle-dlg>
-     <detail-dlg
+    <detail-dlg
       :visible="detailDlgVisible"
       @close="detailDlgVisible = false"
       :form="detailForm"
@@ -52,14 +63,14 @@ import HandleDlg from "./components/handle";
 import DetailDlg from "./components/detail";
 export default {
   mixins: [BasePage],
-  
+
   components: {
     HandleDlg,
     DetailDlg
   },
   props: {},
   created() {
-    this.loadClassroom();
+   
   },
 
   data() {
@@ -68,8 +79,11 @@ export default {
       tableData: [],
       addDlgVisible: false,
       curItem: {},
-      detailDlgVisible:false,
-      detailForm :{},
+      detailDlgVisible: false,
+      detailForm: {},
+      beginPos: 1,
+      pageSize: 5,
+      total: 0
     };
   },
 
@@ -77,7 +91,17 @@ export default {
   mounted() {},
   watch: {},
   methods: {
-   
+    setup(){
+       this.loadClassroom();
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.loadClassroom();
+    },
+    handleCurrentChange(val) {
+      this.beginPos = val;
+      this.loadClassroom();
+    },
     async OnDetailBtnClick(row) {
       let res = await zj.net.live({
         method: "GET",
@@ -86,16 +110,21 @@ export default {
           classroomId: row.classroomId
         })
       });
-      this.detailForm = res.data.data
-      this.detailDlgVisible = true
+      this.detailForm = res.data.data;
+       
+      this.detailDlgVisible = true;
     },
     async loadClassroom() {
       let res = await zj.net.live({
         method: "GET",
         url: "/classroom/list",
-        params: zj.utils.pageParam()
+        params: zj.utils.pageParam({
+          pageSize: this.pageSize,
+          beginPos: (this.beginPos - 1) * this.pageSize
+        })
       });
       this.tableData = res.data.data.items;
+       this.total =  res.data.data.totalCount
     },
     OnEditBtnClick(row) {
       this.curItem = row;

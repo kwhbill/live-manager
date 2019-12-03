@@ -1,22 +1,20 @@
 <template>
-  <div class="course">
+  <div class="user">
     <div class="header" style="margin-bottom:10px">
       <el-button type="primary" @click="onAddBtnClick">新增</el-button>
     </div>
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column
         fixed
-        prop="courseTitle"
-        label="课程名称"
+        prop="userName"
+        label="姓名"
         width="150"
       ></el-table-column>
-      <el-table-column
-        fixed
-        prop="courseIntroduce"
-        label="课程描述"
-        maxWidth="400"
-      ></el-table-column>
-
+      <el-table-column fixed prop="userGender" label="性别" maxWidth="400">
+        <template slot-scope="scope">
+          {{ scope.row.userGender == GENDER.BOY ? "男" : "女" }}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button
@@ -48,12 +46,12 @@
       :total="total"
     >
     </el-pagination>
-    <course-handle-dlg
+    <handle-dlg
       :visible="addDlgVisible"
       @close="addDlgVisible = false"
-      @reload="loadCourse"
+      @reload="loadTeacher"
       :form="curItem"
-    ></course-handle-dlg>
+    ></handle-dlg>
     <detail-dlg
       :visible="detailDlgVisible"
       @close="detailDlgVisible = false"
@@ -67,32 +65,35 @@
 export { router } from "./router";
 var BasePage = zj.widgets.BasePage;
 import qs from "qs";
-import CourseHandleDlg from "./components/course_handle";
+import HandleDlg from "./components/handle";
 import DetailDlg from "./components/detail";
+import { GENDER, ROLE } from "src/common/const";
+
 export default {
   mixins: [BasePage],
 
   components: {
-    CourseHandleDlg,
+    HandleDlg,
     DetailDlg
   },
   props: {},
   created() {
-    console.log(zj.utils.pageParam(), "zj.utils.pageParam()");
-    
+    this.loadTeacher();
   },
 
   data() {
     return {
-      menu: "course",
+      menu: "teacher",
       tableData: [],
       addDlgVisible: false,
       curItem: {},
       detailDlgVisible: false,
       detailForm: {},
-      beginPos: 1,
+      GENDER,
+      ROLE,
+      beginPos:1,
       pageSize: 5,
-      total: 0
+      total : 0
     };
   },
 
@@ -100,49 +101,47 @@ export default {
   mounted() {},
   watch: {},
   methods: {
-    setup(){
-      this.loadCourse();
-    },
     handleSizeChange(val) {
       this.pageSize = val
-      this.loadCourse()
+      this.loadTeacher()
     
     },
     handleCurrentChange(val) {
        this.beginPos = val
-       this.loadCourse()
+       this.loadTeacher()
     },
     async getManagerInfo() {
       let res = await zj.net.live({
         method: "GET",
-        url: "/manager/info"
+        url: "/user/info"
         // params: zj.utils.pageParam()
       });
-      debugger;
+      
       this.tableData = res.data.data.items;
     },
     async OnDetailBtnClick(row) {
       let res = await zj.net.live({
         method: "GET",
-        url: "/course/detail",
+        url: "/user/detail",
         params: zj.utils.pageParam({
-          courseId: row.courseId
+          userId: row.userId
         })
       });
       this.detailForm = res.data.data;
       this.detailDlgVisible = true;
     },
-    async loadCourse() {
+    async loadTeacher() {
       let res = await zj.net.live({
         method: "GET",
-        url: "/course/list",
+        url: "/user/list",
         params: zj.utils.pageParam({
-          pageSize: this.pageSize,
-          beginPos: (this.beginPos - 1) * this.pageSize
+          userRole: ROLE.TEACHER,
+          pageSize : this.pageSize,
+          beginPos : (this.beginPos -1) * this.pageSize ,
         })
       });
       this.tableData = res.data.data.items;
-        this.total =  res.data.data.totalCount
+      this.total =  res.data.data.totalCount
     },
     OnEditBtnClick(row) {
       this.curItem = row;
@@ -154,23 +153,23 @@ export default {
       this.curItem = {};
     },
     OnDeleteBtnClick(row) {
-      this.$confirm(`是否删除课程`, {
+      this.$confirm(`是否删除老师`, {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
         .then(async () => {
           let res = await zj.net.live({
-            url: "/course/delete",
+            url: "/user/delete",
             method: "POST",
             data: JSON.stringify(
               zj.utils.pageParam({
-                courseId: row.courseId
+                userId: row.userId
               })
             )
           });
           if (res.data.result == 0) {
             this.$message.success("删除成功");
-            this.loadCourse();
+            this.loadTeacher();
           } else {
             this.$message.error(res.data.msg);
           }

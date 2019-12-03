@@ -39,8 +39,9 @@ var _ps = null
 export function pageParam(extraParams) {
     if(!_ps){
         _ps = qs.parse(_.trimStart(location.search, "?"))
-        if(window.PAGE_PROJ_ID) _ps.project_id = window.PAGE_PROJ_ID
-        if(window.PAGE_TEAM_ID) _ps.team_id = window.PAGE_TEAM_ID
+        console.log(localStorage.getItem("schoolId"),'localStorage.getItem("schoolId")');
+        
+        if(!_ps.schoolId) _ps.schoolId = localStorage.getItem("schoolId")
     }
 
     if(extraParams){
@@ -103,7 +104,7 @@ export function getPicUrlByMd5(md5){
     return "/v3/file/file/view?md5="+md5
 }
 
-export function formatDateTime(timestamp,format="%Y-%m-%d",TimeType='timestamp'){
+export function formatDateTime(timestamp,format="%Y-%m-%d %H:%i:%s",TimeType='notimestamp'){
     if (timestamp <= 0) {
         return ""
     }

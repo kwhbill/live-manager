@@ -1,8 +1,11 @@
 <template>
-  <div class="app" :class="[menuHide ? `app-nomenu`:``,menuDisabled ? 'app-disable':'' ]">
-    <div class="bg-box" :class="menuDisabled ? 'bg-none':''">
+  <div
+    class="app"
+    :class="[menuHide ? `app-nomenu` : ``, menuDisabled ? 'app-disable' : '']"
+  >
+    <div class="bg-box" :class="menuDisabled ? 'bg-none' : ''">
       <div class="mini-nav">
-        <span @click="menuHide =true">
+        <span @click="menuHide = true">
           <i class="el-icon-d-arrow-left"></i>
         </span>
       </div>
@@ -12,18 +15,23 @@
         <div class="sysui-box">
           <div class="sysui-content">
             <div class="">
-              <img :src="sysui.icon" alt="">
+              <img :src="sysui.icon" alt="" />
             </div>
-            <span>{{sysui.name}}</span>
+            <span>{{ sysui.name }}</span>
           </div>
         </div>
         <nav-level :level="menu.level" :levels="menu.levels"></nav-level>
       </div>
       <div class="menu">
-        <nav-menu :data="menu.items" :index="menu.currentIndex" @select="onMenuSelect" @active="onMenuActive"></nav-menu>
+        <nav-menu
+          :data="menu.items"
+          :index="menu.currentIndex"
+          @select="onMenuSelect"
+          @active="onMenuActive"
+        ></nav-menu>
       </div>
 
-      <div class="mini-nav" @click="menuHide =true">
+      <div class="mini-nav" @click="menuHide = true">
         <span>
           <i class="el-icon-d-arrow-left"></i>
         </span>
@@ -37,22 +45,28 @@
 
     <div class="app-page">
       <div class="app-top-box">
-        <nav-breadcrumb class="zj-breadcrumb breadcrumb" :items="pageBreadcrumb" :title="pageTitle" @click="onBreadcrumbClick"></nav-breadcrumb>
+        <nav-breadcrumb
+          class="zj-breadcrumb breadcrumb"
+          :items="pageBreadcrumb"
+          :title="pageTitle"
+          @click="onBreadcrumbClick"
+        ></nav-breadcrumb>
         <div class="nav-right">
           <el-dropdown @command="handleCommand" class="nav-right-item">
             <div class="el-dropdown-link">
               <div class="title">
                 <i class="fa fa-user-circle-o fa-2" aria-hidden="true"></i>
-                {{accessInfo.user_info.real_name}}
+                {{ accessInfo.user_info.real_name }}
                 <i class="fa fa-caret-down"></i>
               </div>
             </div>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item command="logout">{{$t("app.layout.exit")}}</el-dropdown-item>
+              <el-dropdown-item command="logout">{{
+                $t("app.layout.exit")
+              }}</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
-
       </div>
       <div class="page-box">
         <page class="page" @created="onPageCreated"></page>
@@ -66,7 +80,6 @@
     <notification ref="appNotice" :queue="state.netErrs"></notification>
   </div>
 </template>
-
 
 <script>
 import Vue from "vue";
@@ -91,9 +104,9 @@ export default {
   },
   methods: {
     async setup(resolve) {
-      // if(location.pathname !=='/opms/pages/login.html'){
-      //   await this.loadAccessInfo();
-      // }
+      if (location.pathname !== "/opms/login.html") {
+        await this.loadAccessInfo();
+      }
       this.pageTitle = this.page.title || " ";
       this.menuDisabled = _.get(this.page, "menu.disabled", false);
       if (!this.menuDisabled) {
@@ -124,12 +137,12 @@ export default {
     },
     async handleCommand(command) {
       if (command == "logout") {
-        let res = await zj.net.open({
+        let res = await zj.net.live({
           method: "POST",
-          url: "login/logout/"
+          url: "authority/logout/"
         });
         if (res.data.result == 0) {
-          zj.utils.redirect("/opms/pages/login.html");
+          zj.utils.redirect("/opms/login.html");
         }
       } else {
         this.dlgPwdShow = true;
@@ -142,19 +155,18 @@ export default {
         {
           confirmButtonText: "切换账号",
           callback: action => {
-            
             let urlLogin = zj.utils.urlAppendParam("/login", {
-            to: window.location.href
-          });
+              to: window.location.href
+            });
 
-          zj.utils.redirect(urlLogin);
+            zj.utils.redirect(urlLogin);
           }
-        })
+        }
+      );
     }
   }
 };
 </script>
-
 
 <style lang="less">
 @menuWidth: 200px;

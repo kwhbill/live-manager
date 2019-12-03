@@ -8,40 +8,31 @@
       >
         <el-row>
           <el-col :span="20">
-            <el-form-item label="姓名" prop="userName">
-              {{ruleForm.userName}}
+            <el-form-item label="课程名称" prop="courseTitle">
+              {{ruleForm.courseTitle}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="20">
-            <el-form-item label="账号" prop="userAccount">
-              {{ruleForm.userAccount}}
+            <el-form-item label="课程描述" prop="courseTitle">
+              {{ruleForm.courseIntroduce}}
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="20">
-            <el-form-item label="密码" prop="userPassword">
-              {{ruleForm.userPassword}}
+            <el-form-item label="学校">
+              {{ruleForm.schoolName}}
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="20">
-            <el-form-item label="性别" prop="userGender">
-              {{ruleForm.userGender == GENDER.BOY ? '男生' :'女生'}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-        
       </el-form>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {GENDER,ROLE} from 'src/common/const';
 import qs from "qs";
 export default {
   props: ["visible", "form"],
@@ -51,7 +42,6 @@ export default {
      
       ruleForm: {},
       dlgVisible: false,
-      GENDER,
 
     };
   },

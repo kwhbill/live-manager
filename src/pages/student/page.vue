@@ -10,13 +10,11 @@
         label="姓名"
         width="150"
       ></el-table-column>
-      <el-table-column
-        fixed
-        prop="userGender"
-        label="性别"
-        maxWidth="400"
-      ></el-table-column>
-
+      <el-table-column fixed prop="userGender" label="性别" maxWidth="400">
+        <template slot-scope="scope">
+          {{ scope.row.userGender == GENDER.BOY ? "男" : "女" }}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
           <el-button
@@ -37,13 +35,24 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+      style="margin-top:10px"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="beginPos"
+      :page-size="pageSize"
+      :page-sizes="[5, 10, 20, 30]"
+      layout="total, prev, pager, next"
+      :total="total"
+    >
+    </el-pagination>
     <handle-dlg
       :visible="addDlgVisible"
       @close="addDlgVisible = false"
-      @reload="loadCourse"
+      @reload="loadStudent"
       :form="curItem"
     ></handle-dlg>
-     <detail-dlg
+    <detail-dlg
       :visible="detailDlgVisible"
       @close="detailDlgVisible = false"
       :form="detailForm"
@@ -58,17 +67,18 @@ var BasePage = zj.widgets.BasePage;
 import qs from "qs";
 import HandleDlg from "./components/handle";
 import DetailDlg from "./components/detail";
+import { GENDER, ROLE } from "./common/const";
+
 export default {
   mixins: [BasePage],
-  
+
   components: {
     HandleDlg,
     DetailDlg
   },
   props: {},
   created() {
-    
-    this.loadCourse();
+    this.loadStudent();
   },
 
   data() {
@@ -77,8 +87,13 @@ export default {
       tableData: [],
       addDlgVisible: false,
       curItem: {},
-      detailDlgVisible:false,
-      detailForm :{},
+      detailDlgVisible: false,
+      detailForm: {},
+      GENDER,
+      ROLE,
+      beginPos: 1,
+      pageSize: 5,
+      total: 0
     };
   },
 
@@ -86,6 +101,17 @@ export default {
   mounted() {},
   watch: {},
   methods: {
+    setup() {
+      this.loadStudent();
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.loadStudent();
+    },
+    handleCurrentChange(val) {
+      this.beginPos = val;
+      this.loadStudent();
+    },
     async getManagerInfo() {
       let res = await zj.net.live({
         method: "GET",
@@ -103,16 +129,21 @@ export default {
           userId: row.userId
         })
       });
-      this.detailForm = res.data.data
-      this.detailDlgVisible = true
+      this.detailForm = res.data.data;
+      this.detailDlgVisible = true;
     },
-    async loadCourse() {
+    async loadStudent() {
       let res = await zj.net.live({
         method: "GET",
         url: "/user/list",
-        params: zj.utils.pageParam()
+        params: zj.utils.pageParam({
+          userRole: ROLE.STUDENT,
+          pageSize: this.pageSize,
+          beginPos: (this.beginPos - 1) * this.pageSize
+        })
       });
       this.tableData = res.data.data.items;
+      this.total = res.data.data.totalCount;
     },
     OnEditBtnClick(row) {
       this.curItem = row;
@@ -124,7 +155,7 @@ export default {
       this.curItem = {};
     },
     OnDeleteBtnClick(row) {
-      this.$confirm(`是否删除课程`, {
+      this.$confirm(`是否删除学生`, {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
@@ -140,7 +171,7 @@ export default {
           });
           if (res.data.result == 0) {
             this.$message.success("删除成功");
-            this.loadCourse();
+            this.loadStudent();
           } else {
             this.$message.error(res.data.msg);
           }
