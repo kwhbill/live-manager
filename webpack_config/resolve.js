@@ -25,7 +25,7 @@ export var resolveInfo = {
             "vue": resolve("./node_modules/vue/dist/vue.esm.js"),
             "vue-router": resolve("./node_modules/vue-router/dist/vue-router.esm.js"),
             "echarts": resolve("./dll/vendors/echarts@3.3.2/echarts.min.js"),
-            "element-ui.css": resolve("./node_modules/element-ui/lib/theme-default/index.css"),
+            "element-ui.css": resolve("./node_modules/element-ui/lib/theme-chalk/index.css"),
             "fico4.css": resolve("./dll/vendors/font-awesome@4.7.0/css/font-awesome.min.css"),
             "fico3.css": resolve("./dll/vendors/font-awesome@3.2.1/css/font-awesome.min.css"),
             "jquery": resolve("./node_modules/jquery/dist/jquery.min.js")
