@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "aplayer": "^1.6.0",
-    "axios": "^0.17.1",
+    "axios": "^0.18.1",
     "date-fns": "^1.28.5",
     "echarts": "^3.7.1",
     "element-ui": "2.1.0",
