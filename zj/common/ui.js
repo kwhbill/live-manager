@@ -65,10 +65,12 @@ Vue.buildPage = function({App, parsePageInfo}){
     let [pageUrl,pageName] = parsePageInfo()
     
     window.require([`/opms/commonChunk.js`], function() {
+       
+
         if(!IS_DEV){ // 若为正式环境，css 被抽离独立，需要额外加载
             let cssNameArr = pageName.split("/")
-            cssNameArr[0] = [ "assets", "css"].join("/")
-            loadCss(`/opms/${cssNameArr.join("/")}.css?${new Date().getTime()}`)
+            cssNameArr.unshift([ "assets", "css"].join("/"))
+            loadCss(`/opms/pages/${cssNameArr.join("/")}.css?${new Date().getTime()}`)
         }
         window.require([`i18n`, pageName], (prodMsgMap, Page)=>{
             let lang = Vue.i18nGetLocale()
