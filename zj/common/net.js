@@ -2,7 +2,7 @@ import axios from "axios"
 export var request = axios.request
 
 const liveOptsDefault = {
-    baseURL: "/admin/manage/",
+    baseURL: "/manage/",
     responseType: "json",
     headers: {
         "Content-Type": "application/json"
