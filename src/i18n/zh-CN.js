@@ -2,7 +2,7 @@ export default {
   "personal_home": "个人首页",
 
   //登录
-  'zj_title':"| 中国首个工程管理协作平台",
+  'zj_title':"学校后台系统",
   'zhongliang_title':"| 移动工程管理平台",
   'choose_langue':"语言选择",
   'chinese_simple':"中文(zh-cn)",
