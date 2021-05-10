@@ -33,7 +33,7 @@
     "kscreenshot": "^1.2.3",
     "leaflet": "https://codeload.github.com/Leaflet/Leaflet/tar.gz/197f9d43b7bbc73c0492bf62cd666a5a98038098",
     "leaflet.label": "https://codeload.github.com/Leaflet/Leaflet.label/tar.gz/90ed880773bd64723621a666e74a4f6730aea41c",
-    "lodash": "^4.17.5",
+    "lodash": "^4.17.21",
     "qrcode": "^1.2.0",
     "qs": "^6.5.1",
     "speedtest-net": "^1.6.0",
