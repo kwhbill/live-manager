@@ -35,7 +35,7 @@
     "leaflet.label": "https://codeload.github.com/Leaflet/Leaflet.label/tar.gz/90ed880773bd64723621a666e74a4f6730aea41c",
     "lodash": "^4.17.5",
     "qrcode": "^1.2.0",
-    "qs": "^6.5.1",
+    "qs": "^6.9.7",
     "speedtest-net": "^1.6.0",
     "toastr": "^2.1.2",
     "version": "^0.1.2",
